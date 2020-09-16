@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataComp.Training.Fakers\DataComp.Training.Fakers.csproj" />
+    <ProjectReference Include="..\DataComp.Training.FakeServices\DataComp.Training.FakeServices.csproj" />
+    <ProjectReference Include="..\DataComp.Training.IServices\DataComp.Training.IServices.csproj" />
+  </ItemGroup>
+
+
+</Project>
