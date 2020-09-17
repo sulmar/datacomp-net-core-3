@@ -28,6 +28,8 @@ namespace DataComp.Training.FakeServices
 
         public virtual void Add(TEntity entity)
         {
+            entity.Id = Guid.NewGuid();
+
             entities.Add(entity);
         }
 

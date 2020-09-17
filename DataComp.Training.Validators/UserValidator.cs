@@ -16,7 +16,7 @@ namespace DataComp.Training.Validators
 
             RuleFor(p => p.LastName).NotEmpty().Length(3, 50);
             RuleFor(p => p.FirstName).NotEmpty();
-            RuleFor(p => p.Pesel).NotEmpty().Must((u, prop)=>userService.IsExists(u.Pesel));
+            RuleFor(p => p.Pesel).NotEmpty().Must((u, prop)=>!userService.IsExists(u.Pesel));
         }
     }
 }

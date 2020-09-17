@@ -1,10 +1,15 @@
-﻿using DataComp.Training.IServices;
+﻿using DataComp.Training.Api.Events;
+using DataComp.Training.Api.Filters;
+using DataComp.Training.Api.Requests;
+using DataComp.Training.IServices;
 using DataComp.Training.Models;
 using DataComp.Training.Models.SearchCriteria;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DataComp.Training.Api.Controllers
@@ -15,11 +20,13 @@ namespace DataComp.Training.Api.Controllers
     [Route("api/users")]
     public partial class UsersController : ControllerBase
     {
+        private readonly IMediator mediator;
         private readonly IUserService userService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IMediator mediator)
         {
             this.userService = userService;
+            this.mediator = mediator;
         }
 
         // GET api/users
@@ -33,9 +40,11 @@ namespace DataComp.Training.Api.Controllers
 
         // GET api/users/a747b564-3109-1fb7-5469-8343d21a8289
         [HttpGet("{id:guid}", Name = nameof(GetById))]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            var user = userService.Get(id);
+            // var user = userService.Get(id);
+
+            var user = await mediator.Send(new GetUserRequest(id));
 
             if (user == null)
                 return NotFound();
@@ -71,16 +80,18 @@ namespace DataComp.Training.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] User user, [FromServices] IMessageService messageService) // wstrzykiwanie bezpośrednio do metody zamiast poprzez konstruktor
+        public async Task<IActionResult> Post([FromBody] User user, [FromServices] IMessageService messageService) // wstrzykiwanie bezpośrednio do metody zamiast poprzez konstruktor
         {
             if (!this.ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            userService.Add(user);
+            user = await mediator.Send(new AddUserRequest(user));
 
-            messageService.Send($"Dodano użytkownika {user.FullName}");
+            //userService.Add(user);
+
+            //messageService.Send($"Dodano użytkownika {user.FullName} id = {user.Id}");
 
             // zła praktyka
             // return Created($"http://localhost:5000/api/users/{user.Id}", user);
@@ -126,16 +137,44 @@ namespace DataComp.Training.Api.Controllers
 
         // DELETE /api/users/10
         [HttpDelete("{id}")]
+        [UserExists]
         public IActionResult Delete(Guid id)
         {
-            var user = userService.Get(id);
+            //var user = userService.Get(id);
 
-            if (user == null)
-                return NotFound();
+            //if (user == null)
+            //    return NotFound();
 
-            userService.Remove(id);
+            //userService.Remove(id);
+            //messageService.Send($"Usunięto użytkownika {user.FullName}");
+
+           // mediator.Publish(new UserRemovedEvent(user));
 
             return NoContent();
+        }
+
+
+        // POST /api/users/upload
+        //[HttpPost("upload")]
+        //public async Task<IActionResult> Upload([FromBody] ICollection<User> users)
+        //{
+        //    foreach (var user in users)
+        //    {
+        //        await Task.Delay(TimeSpan.FromMinutes(5));
+        //    }
+
+        //    return Ok();
+        //}
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> Upload([FromBody] ICollection<User> users)
+        {
+            //foreach (var user in users)
+            //{
+            //    await Task.Delay(TimeSpan.FromMinutes(5));
+            //}
+
+            return Accepted();
         }
 
 

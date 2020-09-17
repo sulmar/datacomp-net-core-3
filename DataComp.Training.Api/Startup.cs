@@ -11,6 +11,7 @@ using DataComp.Training.Models;
 using DataComp.Training.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -40,9 +41,13 @@ namespace DataComp.Training.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddFluentValidation();
+            // dotnet add package MediatR.Extensions.Microsoft.DependencyInjection
+            services.AddMediatR(typeof(Startup).Assembly);
 
-            services.AddTransient<IValidator<User>, UserValidator>();
+            services.AddControllers()
+                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<UserValidator>());
+
+            // services.AddTransient<IValidator<User>, UserValidator>();
 
             services.AddSingleton<IUserService, FakeUserService>();
             services.AddSingleton<Faker<User>, UserFaker>();
