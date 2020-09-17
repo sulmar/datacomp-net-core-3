@@ -2,6 +2,7 @@
 using DataComp.Training.IServices;
 using DataComp.Training.Models;
 using DataComp.Training.Models.SearchCriteria;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +15,7 @@ namespace DataComp.Training.FakeServices
 
     public class FakeUserService : FakeEntityService<User, UserSearchCriteria>, IUserService
     {
-        public FakeUserService(Faker<User> faker) : base(faker)
+        public FakeUserService(Faker<User> faker, IOptions<FakeEntityServiceOptions> options) : base(faker, options)
         {
         }
 

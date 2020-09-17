@@ -38,13 +38,34 @@ namespace DataComp.Training.Api
             services.AddSingleton<IProductServiceAsync, FakeProductServiceAsync>();
             services.AddSingleton<Faker<Product>, ProductFaker>();
 
+            services.AddSingleton<IMessageService, EmailMessageService>();
+
             // services.AddScoped<IUserService, DbUserService>();
+
+            services.Configure<FakeEntityServiceOptions>(Configuration.GetSection("FakeEntityServiceOptions"));
+
+            var emailMessageServiceOptions = new EmailMessageServiceOptions();
+            Configuration.GetSection("EmailMessageService").Bind(emailMessageServiceOptions);
+            services.AddSingleton(emailMessageServiceOptions);
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            string environment = env.EnvironmentName; // ASPNETCORE_ENVIRONMENT
+
+            if (env.EnvironmentName == "Production")
+            {
+                Console.WriteLine("Uwaga Produkcja!");
+            }
+
+            string smtp = Configuration["EmailMessageService:Smtp"];
+            int port = int.Parse(Configuration["EmailMessageService:Port"]);
+
+
+            string googleMapsSecretKey = Configuration["GoogleMapsApiKey"];
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

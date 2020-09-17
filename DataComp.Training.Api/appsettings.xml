@@ -1,0 +1,5 @@
+﻿<configuration>
+	<FakeEntityServiceOptions>
+		<Count>30</Count>
+	</FakeEntityServiceOptions>
+</configuration>

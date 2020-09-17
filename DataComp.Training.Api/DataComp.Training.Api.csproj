@@ -1,13 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>3350b82a-90a2-4839-801c-a20316363a5b</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DataComp.Training.Fakers\DataComp.Training.Fakers.csproj" />
     <ProjectReference Include="..\DataComp.Training.FakeServices\DataComp.Training.FakeServices.csproj" />
     <ProjectReference Include="..\DataComp.Training.IServices\DataComp.Training.IServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 
