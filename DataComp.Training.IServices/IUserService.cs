@@ -9,5 +9,6 @@ namespace DataComp.Training.IServices
     public interface IUserService : IEntityService<User, UserSearchCriteria>
     {
         User Get(string pesel);
+        bool IsExists(string pesel);
     }
 }

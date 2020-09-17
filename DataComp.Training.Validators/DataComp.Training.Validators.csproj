@@ -5,13 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bogus" Version="31.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.8" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.8" />
+    <PackageReference Include="FluentValidation" Version="9.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DataComp.Training.IServices\DataComp.Training.IServices.csproj" />
+    <ProjectReference Include="..\DataComp.Training.Models\DataComp.Training.Models.csproj" />
   </ItemGroup>
 
 </Project>

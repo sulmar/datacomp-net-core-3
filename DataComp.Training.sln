@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataComp.Training.FakeServi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataComp.Training.Fakers", "DataComp.Training.Fakers\DataComp.Training.Fakers.csproj", "{FBF0D38D-D128-4F35-BEBE-EDE5BC9755BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataComp.Training.Api", "DataComp.Training.Api\DataComp.Training.Api.csproj", "{E350ED5D-3A78-470C-B09D-CAC7DD057472}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataComp.Training.Api", "DataComp.Training.Api\DataComp.Training.Api.csproj", "{E350ED5D-3A78-470C-B09D-CAC7DD057472}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataComp.Training.Validators", "DataComp.Training.Validators\DataComp.Training.Validators.csproj", "{5776458D-E31A-4F94-B6C7-E64827A7555C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{E350ED5D-3A78-470C-B09D-CAC7DD057472}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E350ED5D-3A78-470C-B09D-CAC7DD057472}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E350ED5D-3A78-470C-B09D-CAC7DD057472}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5776458D-E31A-4F94-B6C7-E64827A7555C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5776458D-E31A-4F94-B6C7-E64827A7555C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5776458D-E31A-4F94-B6C7-E64827A7555C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5776458D-E31A-4F94-B6C7-E64827A7555C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

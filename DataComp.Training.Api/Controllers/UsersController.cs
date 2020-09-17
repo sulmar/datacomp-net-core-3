@@ -73,6 +73,11 @@ namespace DataComp.Training.Api.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] User user, [FromServices] IMessageService messageService) // wstrzykiwanie bezpośrednio do metody zamiast poprzez konstruktor
         {
+            if (!this.ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             userService.Add(user);
 
             messageService.Send($"Dodano użytkownika {user.FullName}");

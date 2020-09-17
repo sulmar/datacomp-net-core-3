@@ -3,12 +3,21 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>3350b82a-90a2-4839-801c-a20316363a5b</UserSecretsId>
+    <NeutralLanguage />
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.2.0" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DataComp.Training.Fakers\DataComp.Training.Fakers.csproj" />
     <ProjectReference Include="..\DataComp.Training.FakeServices\DataComp.Training.FakeServices.csproj" />
     <ProjectReference Include="..\DataComp.Training.IServices\DataComp.Training.IServices.csproj" />
+    <ProjectReference Include="..\DataComp.Training.Validators\DataComp.Training.Validators.csproj" />
   </ItemGroup>
 
   <ItemGroup>

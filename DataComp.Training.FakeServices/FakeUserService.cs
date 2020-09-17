@@ -48,5 +48,10 @@ namespace DataComp.Training.FakeServices
         {
             return entities.SingleOrDefault(u => u.Pesel == pesel);
         }
+
+        public bool IsExists(string pesel)
+        {
+            return entities.Any(u => u.Pesel == pesel);
+        }
     }
 }
