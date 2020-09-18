@@ -26,7 +26,7 @@ namespace DataComp.Training.Api.Services
             identity.AddClaim(new Claim("Stanowisko", "ST2"));
             identity.AddClaim(new Claim("Stanowisko", "ST3"));
 
-            identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, user.Birthday.ToShortDateString()));
+            identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, user.Birthday.ToString("yyyy-MM-dd")));
 
             identity.AddClaim(new Claim(ClaimTypes.Role, "Trainer"));
 
