@@ -5,6 +5,7 @@ using DataComp.Training.IServices;
 using DataComp.Training.Models;
 using DataComp.Training.Models.SearchCriteria;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace DataComp.Training.Api.Controllers
 
     // WebAPI -> REST API 
 
+    [Authorize]
     [Route("api/users")]
     public partial class UsersController : ControllerBase
     {
@@ -71,9 +73,15 @@ namespace DataComp.Training.Api.Controllers
 
         // GET api/users?FullName=Jacek&IsRemoved=false
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Get([FromQuery] UserSearchCriteria searchCriteria)
         {
+            //if (!User.Identity.IsAuthenticated)
+            //{
+            //    return Unauthorized();
+            //}
+
             var users = userService.Get(searchCriteria);
 
             return Ok(users);

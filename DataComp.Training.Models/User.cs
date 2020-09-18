@@ -26,6 +26,9 @@ namespace DataComp.Training.Models
         public string Pesel { get; set; }
         public bool IsRemoved { get; set; }
         public string Nationality { get; set; }
+        public string UserName { get; set; }
+        public string HashedPassword { get; set; }
+
         public void DoWork() => Console.WriteLine();
     }
 }

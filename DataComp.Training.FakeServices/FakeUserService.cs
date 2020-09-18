@@ -13,7 +13,7 @@ namespace DataComp.Training.FakeServices
 {
 
 
-    public class FakeUserService : FakeEntityService<User, UserSearchCriteria>, IUserService
+    public class FakeUserService : FakeEntityService<User, UserSearchCriteria>, IUserService, IAuthenticateService
     {
         public FakeUserService(Faker<User> faker, IOptions<FakeEntityServiceOptions> options) : base(faker, options)
         {
@@ -52,6 +52,13 @@ namespace DataComp.Training.FakeServices
         public bool IsExists(string pesel)
         {
             return entities.Any(u => u.Pesel == pesel);
+        }
+
+        public bool TryAuthenticate(string username, string hashedPassword, out User user)
+        {
+            user = entities.SingleOrDefault(u => u.UserName == username && u.HashedPassword == hashedPassword);
+
+            return user != null;
         }
     }
 }

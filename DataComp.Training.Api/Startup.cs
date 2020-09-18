@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
+using DataComp.Training.Api.AuthenticationHandlers;
 using DataComp.Training.Api.Extensions;
 using DataComp.Training.Fakers;
 using DataComp.Training.FakeServices;
@@ -12,6 +13,7 @@ using DataComp.Training.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -70,6 +72,10 @@ namespace DataComp.Training.Api
             // z u¿yciem w³asnej klasy rozszerzaj¹cej
             services.ConfigurePOCO<EmailMessageServiceOptions>(Configuration.GetSection("EmailMessageService"));
 
+            services.AddSingleton<IAuthenticateService, FakeUserService>();
+
+            services.AddAuthentication("Basic")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
 
 
         }
@@ -100,6 +106,7 @@ namespace DataComp.Training.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
