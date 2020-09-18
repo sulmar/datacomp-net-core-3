@@ -32,7 +32,7 @@ namespace DataComp.Training.Api
 
             // https://github.com/serilog/serilog-sinks-mssqlserver
 
-            CreateHostBuilder(args).Build().Run();
+                CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

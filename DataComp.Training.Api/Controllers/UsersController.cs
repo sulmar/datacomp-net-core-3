@@ -1,5 +1,6 @@
 ﻿using DataComp.Training.Api.Events;
 using DataComp.Training.Api.Filters;
+using DataComp.Training.Api.Models;
 using DataComp.Training.Api.Requests;
 using DataComp.Training.IServices;
 using DataComp.Training.Models;
@@ -18,7 +19,7 @@ namespace DataComp.Training.Api.Controllers
 
     // WebAPI -> REST API 
 
-    [Authorize]
+    [Authorize(Roles = "Trainer, Developer")]
     [Route("api/users")]
     public partial class UsersController : ControllerBase
     {
@@ -62,6 +63,11 @@ namespace DataComp.Training.Api.Controllers
         [HttpGet("{pesel:length(13)}")]
         public IActionResult Get(string pesel)
         {
+            if (User.IsInRole("Developer"))
+            {
+
+            }
+
             var user = userService.Get(pesel);
 
             if (user == null)
@@ -90,6 +96,7 @@ namespace DataComp.Training.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "AtLeast18")]
         public async Task<IActionResult> Post([FromBody] User user, [FromServices] IMessageService messageService) // wstrzykiwanie bezpośrednio do metody zamiast poprzez konstruktor
         {
             if (!this.ModelState.IsValid)
@@ -193,6 +200,25 @@ namespace DataComp.Training.Api.Controllers
             //}
 
             return Accepted();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("token")]
+        public IActionResult GenerateToken(
+            [FromServices] IAuthenticateService authenticateService,
+            [FromServices] ITokenService tokenService,
+            [FromForm] UserParam userParam)
+        {
+            if (authenticateService.TryAuthenticate(userParam.Username, userParam.HashedPassword, out User user))
+            {
+                string token = tokenService.CreateToken(user);
+
+                return Ok(token);
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
 

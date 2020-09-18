@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Bogus;
 using DataComp.Training.Api.AuthenticationHandlers;
+using DataComp.Training.Api.AuthorizationHandlers;
 using DataComp.Training.Api.Extensions;
+using DataComp.Training.Api.Requriments;
+using DataComp.Training.Api.Services;
 using DataComp.Training.Fakers;
 using DataComp.Training.FakeServices;
 using DataComp.Training.IServices;
@@ -14,6 +18,8 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -23,6 +29,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 
@@ -74,10 +81,32 @@ namespace DataComp.Training.Api
 
             services.AddSingleton<IAuthenticateService, FakeUserService>();
 
-            services.AddAuthentication("Basic")
-                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
+            services.AddSingleton<ITokenService, JwtTokenService>();
 
+            var secretkey = Encoding.ASCII.GetBytes(Configuration["Secret-Key"]);
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(cfg =>
+                 {
+                     cfg.TokenValidationParameters = new TokenValidationParameters()
+                     {
+                         ValidateIssuerSigningKey = true,
+                         IssuerSigningKey = new SymmetricSecurityKey(secretkey),
+                         ValidateIssuer = false,
+                         ValidateAudience = false
+                     };
+                 });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AtLeast18", policy => policy.Requirements.Add(new MinimumAgeRequirement(18)));
+            });
+
+            services.AddSingleton<IAuthorizationHandler, MinimumAgeHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
