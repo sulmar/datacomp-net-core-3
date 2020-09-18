@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Sockets;
+using System.Security.Claims;
+using System.Threading;
 
 namespace DataComp.Training.FakeServices
 {
@@ -25,7 +27,7 @@ namespace DataComp.Training.FakeServices
             user.IsRemoved = true;
         }
 
-        public override ICollection<User> Get(UserSearchCriteria searchCriteria)
+        private IQueryable<User> GetBySearchCriteria(UserSearchCriteria searchCriteria)
         {
             IQueryable<User> query = entities.AsQueryable();
 
@@ -38,6 +40,13 @@ namespace DataComp.Training.FakeServices
             {
                 query = query.Where(u => u.IsRemoved == searchCriteria.IsRemoved.Value);
             }
+
+            return query;
+        }
+
+        public override ICollection<User> Get(UserSearchCriteria searchCriteria)
+        {
+            var query = GetBySearchCriteria(searchCriteria);
 
             // SQL - Wyrażenia CTE
 
@@ -59,6 +68,18 @@ namespace DataComp.Training.FakeServices
             user = entities.SingleOrDefault(u => u.UserName == username && u.HashedPassword == hashedPassword);
 
             return user != null;
+        }
+
+        public ICollection<User> Get(UserSearchCriteria searchCriteria, PermissionCriteria permissionCriteria)
+        {
+            var query = GetBySearchCriteria(searchCriteria);
+
+            if (permissionCriteria.Departments!=null)
+            {
+                // query = query.Where()
+            }
+
+            throw new NotImplementedException();
         }
     }
 }

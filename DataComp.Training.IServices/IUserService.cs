@@ -2,6 +2,7 @@
 using DataComp.Training.Models.SearchCriteria;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace DataComp.Training.IServices
 {
@@ -10,5 +11,6 @@ namespace DataComp.Training.IServices
     {
         User Get(string pesel);
         bool IsExists(string pesel);
+        ICollection<User> Get(UserSearchCriteria searchCriteria, PermissionCriteria permissionCriteria);
     }
 }

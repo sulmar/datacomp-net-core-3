@@ -57,6 +57,14 @@ namespace DataComp.Training.Api.AuthenticationHandlers
             }
 
             ClaimsIdentity identity = new ClaimsIdentity(Scheme.Name);
+
+            identity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
+            identity.AddClaim(new Claim("Stanowisko", "ST1"));
+            identity.AddClaim(new Claim("Stanowisko", "ST2"));
+            identity.AddClaim(new Claim("Stanowisko", "ST3"));
+
+            identity.AddClaim(new Claim("User", user.ToString()));
+
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
             var ticket = new AuthenticationTicket(principal, Scheme.Name);

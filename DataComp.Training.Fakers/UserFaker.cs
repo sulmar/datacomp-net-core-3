@@ -22,6 +22,9 @@ namespace DataComp.Training.Fakers
             RuleFor(p => p.UserName, f => f.Person.UserName);
             RuleFor(p => p.HashedPassword, f => "12345");
 
+            // imie.nazwisko@datacomp.pl
+            RuleFor(p => p.Email, (f, u) => $"{u.FirstName}.{u.LastName}@datacomp.pl");
+
         }
     }
 }

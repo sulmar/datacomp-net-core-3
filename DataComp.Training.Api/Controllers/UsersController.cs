@@ -82,6 +82,8 @@ namespace DataComp.Training.Api.Controllers
             //    return Unauthorized();
             //}
 
+            string user = this.User.FindFirst("User").Value;
+
             var users = userService.Get(searchCriteria);
 
             return Ok(users);
@@ -94,6 +96,14 @@ namespace DataComp.Training.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            var claims = this.User.FindAll("Stanowisko");
+
+            foreach (var claim in claims)
+            {
+                
+            }
+
 
             user = await mediator.Send(new AddUserRequest(user));
 
