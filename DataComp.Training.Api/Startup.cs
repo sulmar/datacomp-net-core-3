@@ -82,6 +82,7 @@ namespace DataComp.Training.Api
             services.AddSingleton<IAuthenticateService, FakeUserService>();
 
             services.AddSingleton<ITokenService, JwtTokenService>();
+            services.AddSingleton<IClaimService, ClaimService>();
 
             var secretkey = Encoding.ASCII.GetBytes(Configuration["Secret-Key"]);
 

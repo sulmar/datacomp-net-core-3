@@ -1,4 +1,5 @@
-﻿using DataComp.Training.IServices;
+﻿using DataComp.Training.Api.Services;
+using DataComp.Training.IServices;
 using DataComp.Training.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
@@ -19,8 +20,10 @@ namespace DataComp.Training.Api.AuthenticationHandlers
         private const string authorizationKey = "Authorization";
 
         private readonly IAuthenticateService authenticateService;
+        private readonly IClaimService claimService;
 
         public BasicAuthenticationHandler(
+            IClaimService claimService,
             IAuthenticateService authenticateService,
             IOptionsMonitor<AuthenticationSchemeOptions> options, 
             ILoggerFactory logger, 
@@ -29,6 +32,7 @@ namespace DataComp.Training.Api.AuthenticationHandlers
             : base(options, logger, encoder, clock)
         {
             this.authenticateService = authenticateService;
+            this.claimService = claimService;
         }
 
         protected async override Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -58,12 +62,7 @@ namespace DataComp.Training.Api.AuthenticationHandlers
 
             ClaimsIdentity identity = new ClaimsIdentity(Scheme.Name);
 
-            identity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
-            identity.AddClaim(new Claim("Stanowisko", "ST1"));
-            identity.AddClaim(new Claim("Stanowisko", "ST2"));
-            identity.AddClaim(new Claim("Stanowisko", "ST3"));
-
-            identity.AddClaim(new Claim("User", user.ToString()));
+            identity.AddClaims(claimService.Get(user));
 
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 

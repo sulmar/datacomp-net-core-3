@@ -17,7 +17,7 @@ namespace DataComp.Training.Api.AuthorizationHandlers
                 return Task.CompletedTask;
             }
 
-            var dateOfBirth = Convert.ToDateTime(context.User.FindFirst(ClaimTypes.DateOfBirth));
+            var dateOfBirth = Convert.ToDateTime(context.User.FindFirst(ClaimTypes.DateOfBirth).Value);
 
             int years = DateTime.Now.Year - dateOfBirth.Year;
 

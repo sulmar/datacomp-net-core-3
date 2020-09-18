@@ -2,7 +2,6 @@
 using DataComp.Training.Models;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -11,8 +10,17 @@ using System.Threading.Tasks;
 
 namespace DataComp.Training.Api.Services
 {
+
+
     public class JwtTokenService : ITokenService
     {
+        private readonly IClaimService claimService;
+
+        public JwtTokenService(IClaimService claimService)
+        {
+            this.claimService = claimService;
+        }
+
         public string CreateToken(User user)
         {
             string secretKey = "your-256-bit-secret-your-256-bit-secret-your-256-bit-secret-your-256-bit-secret";
@@ -21,14 +29,8 @@ namespace DataComp.Training.Api.Services
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
             ClaimsIdentity identity = new ClaimsIdentity();
-            identity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
-            identity.AddClaim(new Claim("Stanowisko", "ST1"));
-            identity.AddClaim(new Claim("Stanowisko", "ST2"));
-            identity.AddClaim(new Claim("Stanowisko", "ST3"));
 
-            identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, user.Birthday.ToString("yyyy-MM-dd")));
-
-            identity.AddClaim(new Claim(ClaimTypes.Role, "Trainer"));
+            identity.AddClaims(claimService.Get(user));
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var securityTokenDescriptor = new SecurityTokenDescriptor
